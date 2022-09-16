@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Silakan klik login jika sudah memiliki akun, jika belum silakan register terlebih dahulu!</string>
+    <string name="title_welcome_page">Selamat datang di StoryApp</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Silakan masukan email dan password</string>
+    <string name="title_login_page">Login</string>
+    <string name="name">Nama</string>
+    <string name="copyright">© 2022 StoryApp</string>
+    <string name="message_main_page"></string>
+    <string name="greeting">Halo %1$s,</string>
+    <string name="logout">Keluar</string>
+</resources>
