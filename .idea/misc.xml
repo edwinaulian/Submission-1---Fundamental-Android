@@ -3,8 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/drawable/add_icon.xml" value="0.175" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/drawable/ic_capture.xml" value="0.1" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/drawable/ic_place_holder.xml" value="0.175" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/drawable/ic_switch_camera.xml" value="0.1" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_addstory.xml" value="0.19927536231884058" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_camera.xml" value="0.19927536231884058" />
         <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_login.xml" value="0.22" />
-        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_main.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_signup.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/activity_welcome.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/c160222001/AndroidStudioProjects/Submission 1 - Story App/app/src/main/res/layout/item_story.xml" value="0.19519927536231885" />

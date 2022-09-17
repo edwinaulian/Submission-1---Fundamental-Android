@@ -14,7 +14,8 @@ import retrofit2.Response
 
 class MainViewModel(private val pref: UserPreference) : ViewModel() {
 
-    val listStory = MutableLiveData<ArrayList<ListStory>>()
+    private val _listStory = MutableLiveData<ArrayList<ListStory>>()
+    val listStory: LiveData<ArrayList<ListStory>> = _listStory
 
     fun getUser(): LiveData<UserModel> {
         return pref.getUser().asLiveData()
@@ -31,8 +32,7 @@ class MainViewModel(private val pref: UserPreference) : ViewModel() {
         client.enqueue(object : Callback<Story> {
             override fun onResponse(call: Call<Story>, response: Response<Story>) {
                 if (response.isSuccessful) {
-                    listStory.postValue(response.body()?.listStory)
-                    Log.d("halo", "${response.body()?.listStory}")
+                    _listStory.value = response.body()?.listStory
                 }
             }
             override fun onFailure(call: Call<Story>, t: Throwable) {

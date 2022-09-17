@@ -65,35 +65,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.signupButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
-            setUpRegister()
-//            when {
-//                name.isEmpty() -> {
-//                    binding.nameEditTextLayout.error = "Masukkan email"
-//                }
-//                email.isEmpty() -> {
-//                    binding.emailEditTextLayout.error = "Masukkan email"
-//                }
-//                password.isEmpty() -> {
-//                    binding.passwordEditTextLayout.error = "Masukkan password"
-//                }
-//                else -> {
-//                    signupViewModel.saveUser(UserModel(name, email, password, false))
-//                    AlertDialog.Builder(this).apply {
-//                        setTitle("Yeah!")
-//                        setMessage("Akunnya sudah jadi nih. Yuk, login dan belajar coding.")
-//                        setPositiveButton("Lanjut") { _, _ ->
-//                            finish()
-//                        }
-//                        create()
-//                        show()
-//                    }
-//                }
-//            }
-        }
+        binding.signupButton.setOnClickListener { setUpRegister() }
     }
 
     private fun setUpRegister() {
@@ -112,7 +84,7 @@ class SignupActivity : AppCompatActivity() {
                     val responseBody = response.body()
                     if (responseBody != null && !responseBody.error!!) {
                         if (responseBody?.error != true) {
-                            signupViewModel.saveUser(UserModel(request?.name.toString(), request?.email.toString(), request?.password.toString(), false))
+                            signupViewModel.saveUser(UserModel(request?.name.toString(), request?.email.toString(), request?.password.toString(), false, ""))
                             alertSignUpSucces()
                         }
                     } else {

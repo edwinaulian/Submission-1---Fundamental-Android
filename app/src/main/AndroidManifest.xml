@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.storyApp.edwin.mainStoryApp">
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginWithAnimation"
         tools:targetApi="31">
-    <activity
+        <activity
+            android:name=".view.add.AddStoryActivity"
+            android:exported="false" />
+       <activity
             android:name=".view.welcome.WelcomeActivity"
             android:exported="false" />
         <activity
@@ -23,6 +31,9 @@
             android:name=".view.login.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".view.add.CameraActivity"
+            android:exported="false"/>
+        <activity
             android:name=".view.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,6 +41,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.storyApp.edwin.mainStoryApp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
 
 </manifest>

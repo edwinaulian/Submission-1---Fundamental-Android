@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -15,7 +14,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.storyApp.edwin.mainStoryApp.databinding.ActivityLoginBinding
@@ -24,18 +22,15 @@ import com.storyApp.edwin.mainStoryApp.model.UserModel
 import com.storyApp.edwin.mainStoryApp.model.UserPreference
 import com.storyApp.edwin.mainStoryApp.model.request.LoginRequest
 import com.storyApp.edwin.mainStoryApp.service.RetrofitClient
-import com.storyApp.edwin.mainStoryApp.service.SessionManager
 import com.storyApp.edwin.mainStoryApp.view.ViewModelFactory
 import com.storyApp.edwin.mainStoryApp.view.main.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var sessionManager: SessionManager
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
     private lateinit var user: UserModel
@@ -65,11 +60,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        loginViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
-        )[LoginViewModel::class.java]
-
+        loginViewModel = ViewModelProvider(this, ViewModelFactory(UserPreference.getInstance(dataStore)))[LoginViewModel::class.java]
         loginViewModel.getUser().observe(this, { user ->
             this.user = user
         })
@@ -77,38 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
             setupLogin()
-//            when {
-//                email.isEmpty() -> {
-//                    binding.emailEditTextLayout.error = "Masukkan email"
-//                }
-//                password.isEmpty() -> {
-//                    binding.passwordEditTextLayout.error = "Masukkan password"
-//                }
-//                email != user.email -> {
-//                    binding.emailEditTextLayout.error = "Email tidak sesuai"
-//                }
-//                password != user.password -> {
-//                    binding.passwordEditTextLayout.error = "Password tidak sesuai"
-//                }
-//                else -> {
-//                    setupLogin()
-//                    AlertDialog.Builder(this).apply {
-//                        setTitle("Selamat")
-//                        setMessage("Anda berhasil login.")
-//                        setPositiveButton("Lanjut") { _, _ ->
-//                            val intent = Intent(context, MainActivity::class.java)
-//                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                            startActivity(intent)
-//                            finish()
-//                        }
-//                        create()
-//                        show()
-//                    }
-//                }
-//            }
         }
     }
 
@@ -127,9 +87,10 @@ class LoginActivity : AppCompatActivity() {
                     val responseBody = response.body()
                     if (responseBody != null && !responseBody.error!!) {
                         if (responseBody?.message == "success" && responseBody?.loginResult != null) {
-                            loginViewModel.login()
+                            val name = responseBody?.loginResult?.name.toString()
+                            val token = responseBody?.loginResult?.token.toString()
+                            loginViewModel.login(name, token)
                             allertDialogSuccesLogin(responseBody?.loginResult?.token.toString())
-                            Log.d("token", responseBody?.loginResult?.token.toString())
                         }
                         Toast.makeText(this@LoginActivity, responseBody.message, Toast.LENGTH_SHORT).show()
                     } else {
@@ -154,9 +115,6 @@ class LoginActivity : AppCompatActivity() {
                             bundle.putString(TOKEN, token)
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtras(bundle)
-                            startActivity(intent)
-
-//                           val intent = Intent(context, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)
                             finish()

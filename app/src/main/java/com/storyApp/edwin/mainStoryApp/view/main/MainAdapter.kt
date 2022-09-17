@@ -1,6 +1,5 @@
 package com.storyApp.edwin.mainStoryApp.view.main
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,9 +8,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.storyApp.edwin.mainStoryApp.databinding.ItemStoryBinding
 import com.storyApp.edwin.mainStoryApp.model.ListStory
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.StoryViewHolder>() {
-
-    private val list = ArrayList<ListStory>()
+class MainAdapter(var list: ArrayList<ListStory>) : RecyclerView.Adapter<MainAdapter.StoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val view = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,9 +22,8 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.StoryViewHolder>() {
                     .load(item.photoUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()
-                    .into(tvUser)
-                tvUsername.text = item.name
-                Log.d("edwin", "${item.name}" )
+                    .into(ivItemPhoto)
+                tvItemName.text = item.name
             }
         }
     }
@@ -36,5 +32,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.StoryViewHolder>() {
         holder.bind(list[position])
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int {
+        return list.size
+    }
 }

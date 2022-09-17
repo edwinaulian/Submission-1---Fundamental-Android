@@ -5,36 +5,36 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.storyApp.edwin.mainStoryApp.databinding.ActivityMainBinding
 import com.storyApp.edwin.mainStoryApp.R
+import com.storyApp.edwin.mainStoryApp.databinding.ActivityMainBinding
 import com.storyApp.edwin.mainStoryApp.model.UserPreference
 import com.storyApp.edwin.mainStoryApp.view.ViewModelFactory
+import com.storyApp.edwin.mainStoryApp.view.add.AddStoryActivity
 import com.storyApp.edwin.mainStoryApp.view.welcome.WelcomeActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: MainAdapter
+    private var token: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        adapter = MainAdapter()
-        adapter.notifyDataSetChanged()
+
+        token = intent.getStringExtra("TOKEN").toString()
 
         setupView()
         setupViewModel()
@@ -57,45 +57,45 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         mainViewModel = ViewModelProvider(this, ViewModelFactory(UserPreference.getInstance(dataStore)))[MainViewModel::class.java]
-        mainViewModel.getUser().observe(this, { user ->
+        mainViewModel.getUser().observe(this) { user ->
             if (user.isLogin) {
+                getAllStory(user.token)
                 binding.nameTextView.text = getString(R.string.greeting, user.name)
             } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
-        })
-
+        }
+        mainViewModel.listStory.observe(this) { newList ->
         binding.apply {
             rvStory.layoutManager = LinearLayoutManager(this@MainActivity)
-            rvStory.setHasFixedSize(true)
-            rvStory.adapter = adapter
-            getAllStory()
-        }
+            rvStory.adapter = MainAdapter(newList)
+        }}
     }
 
-    private fun getAllStory() {
+    private fun getAllStory(token: String) {
         binding.apply {
-            showLoading(true)
-            val bundle = intent.extras
-            if (bundle != null) {
-                var token = bundle!!.getString("TOKEN")
                 if (token != null) {
                     mainViewModel.getAllStory(token)
                 }
-            }
         }
     }
 
     private fun setupAction() {
         binding.logoutButton.setOnClickListener {
+            getIntent().removeExtra("TOKEN");
+            applicationContext.getSharedPreferences("TOKEN", 0).edit().clear().commit()
             mainViewModel.logout()
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            startActivity(Intent(this, AddStoryActivity::class.java))
         }
     }
 
     private fun playAnimation() {
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
-            duration = 6000
+            duration = 4000
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
         }.start()
@@ -106,16 +106,8 @@ class MainActivity : AppCompatActivity() {
 
         AnimatorSet().apply {
             playSequentially(name, message, logout)
-            //playSequentially( logout)
-            startDelay = 500
+            startDelay = 400
         }.start()
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
 }

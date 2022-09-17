@@ -14,4 +14,9 @@
     <string name="message_main_page"></string>
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
+    <string name="desc">description</string>
+    <string name="camera_x">CameraX</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
 </resources>
